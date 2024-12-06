@@ -46,16 +46,17 @@ def load_doc(file_path: str, ext: str):
 
 
 def load_all_docs(dir_path: str):
-    uploaded = []
-    for filename in os.listdir(dir_path):
-        if filename.endswith(".txt"): 
-            load_doc(dir_path + "/" + filename, "txt")
-            uploaded.append(filename)
-        elif filename.endswith(".pdf"):
-            load_doc(dir_path + "/" + filename, "pdf")
-            uploaded.append(filename)
-        else:
-            print(f"{filename} is not an acceptable file")
+    if not vector_store:
+        uploaded = []
+        for filename in os.listdir(dir_path):
+            if filename.endswith(".txt"): 
+                load_doc(dir_path + "/" + filename, "txt")
+                uploaded.append(filename)
+            elif filename.endswith(".pdf"):
+                load_doc(dir_path + "/" + filename, "pdf")
+                uploaded.append(filename)
+            else:
+                print(f"{filename} is not an acceptable file")
 
     # print(f"Successfully loaded the following files: {uploaded}")
     return vector_store

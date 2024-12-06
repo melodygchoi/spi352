@@ -3,6 +3,7 @@ import sys
 import data
 
 from langchain_core.vectorstores import InMemoryVectorStore
+from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain import hub
 from langchain.chains.combine_documents import create_stuff_documents_chain
@@ -15,10 +16,16 @@ os.environ["OPENAI_API_KEY"] = os.getenv('OPENAI')
 
 llm = ChatOpenAI(model="gpt-4o-mini")
 embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
-vector_store = InMemoryVectorStore(embeddings)
 
-prompt = hub.pull("rlm/rag-prompt")
-chain = create_stuff_documents_chain(llm, prompt)
+# prompt = hub.pull("rlm/rag-prompt")
+prompt = ChatPromptTemplate([
+    ("system", "You are an assistant for answering questions related to biometric privacy, data, and AI policy. Use the following pieces of context to answer the question. \
+                If you don't know the answer, say that you don't know. Be as detailed as possible; long responses are acceptable. \
+                \nQuestion: {question}\
+                \nContext: {context} \
+                \nAnswer:")
+    ])
+chain = create_stuff_documents_chain(llm, prompt, )
 
 
 def run():
@@ -39,7 +46,7 @@ def run():
             print("")
             # retrieve from database using similarity search
             contexts = vector_store.similarity_search(query)
-            sources = [d.metadata["source"] for d in contexts]
+            sources = set(d.metadata["source"] for d in contexts)
 
             # feed contexts + prompt + query into llm
             msg = chain.invoke({"question": query, "context": contexts})
