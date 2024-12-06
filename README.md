@@ -2,7 +2,9 @@
 **_a RAG chatbot that provides policy recommendations for lawmakers in the biometric data and AI privacy spaces_**
 
 Melody Choi, Natalia Eichmann 
+
 Developed for SPI 352, taught by Prof. Peter Henderson and Christian Chung
+
 Fall 2024, Princeton University
 
 ## 👩‍💻	Overview
@@ -15,7 +17,7 @@ Blah blah blah, bkah!
 
 ----
 
-# Documents used as context:
+### Documents used as context:
 *include list of docs + citations here*
 
 
